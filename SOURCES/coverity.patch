@@ -1,0 +1,27 @@
+diff --git a/src/arch-ia64.c b/src/arch-ia64.c
+index 2573d69..6ca1129 100644
+--- a/src/arch-ia64.c
++++ b/src/arch-ia64.c
+@@ -119,8 +119,8 @@ ia64_adjust_rela (DSO *dso, GElf_Rela *rela, GElf_Addr start,
+ 	}
+       else
+ 	{
+-	  write_le64 (dso, rela->r_offset, val);
+-	  write_le64 (dso, rela->r_offset + 8, gp);
++	  write_be64 (dso, rela->r_offset, val);
++	  write_be64 (dso, rela->r_offset + 8, gp);
+ 	}
+     }
+   return 0;
+diff --git a/src/fptr.c b/src/fptr.c
+index cfe3aed..5d68c11 100644
+--- a/src/fptr.c
++++ b/src/fptr.c
+@@ -458,6 +458,7 @@ opd_size (struct prelink_info *info, GElf_Word entsize)
+ 	e->val = f->val;
+ 	e->gp = f->gp;
+ 	e->opd = ret | OPD_ENT_NEW;
++	f->ent = e;
+ 	ret += entsize;
+       }
+ 
